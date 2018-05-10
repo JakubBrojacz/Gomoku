@@ -29,16 +29,15 @@ void NeuralNet::mutate(float mr)
 	woh->mutate(mr);
 }
 
-#ifndef SAMESEED
-unsigned int NeuralNet::getSeed()
+void NeuralNet::GradientDescent() //input : oczekiwane wartosci dla danych sytuacji; learning rate(lambda)
 {
-	return seed;
+	//C - b³¹d (funkcja bledu - dana jako parametr(?) )
+	//C = srednia Cxi
+	//xi - i-ta sytuacja treningowa
+	//yi - i-ty wynik poprawny
+	//wi - i-ty parametr w dowolnej macierzy
+	//wi-= lambda * dC/dw1;
 }
-void NeuralNet::generateSeed()
-{
-	seed = time(NULL);
-}
-#endif // !SAMESEED
 
 
 

@@ -12,9 +12,6 @@ class NeuralNet {
 	Matrix* whi;//imput -> hidden
 	Matrix* whh;//hidden -> hidden2
 	Matrix* woh;//hidden2 -> output
-#ifdef SAMESEED
-
-#endif // SAMESEED
 
 	unsigned int seed;
 public:
@@ -25,10 +22,8 @@ public:
 
 	void mutate(float mr);
 
-#ifndef SAMESEED
-	unsigned int getSeed();
-	void generateSeed();
-#endif // !SAMESEED
+	void GradientDescent(); //nwm parametry + output
+
 
 	//the way brain thinks
 	float* output(float* inputsArr, int l);
