@@ -29,14 +29,33 @@ void NeuralNet::mutate(float mr)
 	woh->mutate(mr);
 }
 
-void NeuralNet::GradientDescent() //input : oczekiwane wartosci dla danych sytuacji; learning rate(lambda)
+void NeuralNet::GradientDescent(int m, int**board[], float y[], float lambda)
 {
+	//m - number of trening situations
+	//board - vector of inputs
+	//y - vector of outputs
+	//lambda - learning rate
+
+	
+	//Create empty matrixes for every weigh layer
+	whi = new Matrix(hNodes, iNodes + 1);
+	whh = new Matrix(hNodes, hNodes + 1);
+	woh = new Matrix(oNodes, hNodes + 1);
+
+	//Calculate dC/dwi for every traning set
+	for (int i = 0; i < m; i++)
+	{
+
+	}
 	//C - b³¹d (funkcja bledu - dana jako parametr(?) )
 	//C = srednia Cxi
+	//C = 1/n * sum(Cxi)         <- zawsze prawdziwe
+	//Cxi = 1/2 * (NN(xi)-yi)^2  <- to moze byc inne
 	//xi - i-ta sytuacja treningowa
 	//yi - i-ty wynik poprawny
+	//m - liczba sytuacji treningowych
 	//wi - i-ty parametr w dowolnej macierzy
-	//wi-= lambda * dC/dw1;
+	//wi-= lambda * dC/dw1; a raczej labmda/m * sum(dC_xi/dwi)		<- zawsze prawdziwe
 }
 
 

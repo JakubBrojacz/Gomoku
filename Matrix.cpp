@@ -9,6 +9,11 @@ float Matrix::sigmoid(float x)
 	//return 0;
 }
 
+float Matrix::sigmoidDerivative(float x)
+{
+	return sigmoid(x)*(1-sigmoid(x));
+}
+
 Matrix::Matrix(int r, int c) : rows(r),cols(c)
 {
 	matrix = new float*[rows];
@@ -110,6 +115,17 @@ Matrix * Matrix::activate()
 	for (int i = 0; i<rows; i++) {
 		for (int j = 0; j<cols; j++) {
 			n->matrix[i][j] = sigmoid(matrix[i][j]);
+		}
+	}
+	return n;
+}
+
+Matrix * Matrix::activeDerivative()
+{
+	Matrix* n = new Matrix(rows, cols);
+	for (int i = 0; i<rows; i++) {
+		for (int j = 0; j<cols; j++) {
+			n->matrix[i][j] = sigmoidDerivative(matrix[i][j]);
 		}
 	}
 	return n;

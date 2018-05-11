@@ -22,7 +22,7 @@ public:
 
 	void mutate(float mr);
 
-	void GradientDescent(); //nwm parametry + output
+	void GradientDescent(int m, int**board[], float y[], float lambda); //nwm parametry + output
 
 
 	//the way brain thinks

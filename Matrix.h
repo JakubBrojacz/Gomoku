@@ -12,6 +12,7 @@ class Matrix {
 
 	//activation function
 	float sigmoid(float x);
+	float sigmoidDerivative(float x);
 public:
 	Matrix(int r, int c); //rows, colums
 
@@ -40,9 +41,9 @@ public:
 	//add one row of bias
 	Matrix* addBias();
 
-	//call activation function on matrix
+	//call activation function on matrix or its derivative
 	Matrix* activate();
-
+	Matrix* activeDerivative();
 
 	Matrix* removeBottomLayer();
 
