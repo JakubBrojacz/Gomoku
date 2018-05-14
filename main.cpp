@@ -15,95 +15,91 @@ void human()
 void hmmm()
 {
 	
-	Object obj(INPUTNODES, HIDDENNODES, OUTPUTNODES);
-	Object obj2(INPUTNODES, HIDDENNODES, OUTPUTNODES);
-	//Object obj2((INPUTNODES, HIDDENNODES, OUTPUTNODES););
-	std::cout << "Object 1:" << std::endl;
-	obj.graj(1,obj2.getBrain());
-	//for(int i=0;i<10;i++)
-		//std::cout << obj.graj() << std::endl;
-	//std::cout << "Object 2:" << std::endl;
-	//for (int i = 0; i<10; i++)
-		//td::cout << obj2.graj() << std::endl;
 
-	//std::cin >> a[0];
 	
-	//std::cout << "hmm() not working" << std::endl;
+	std::cout << "hmm() not working" << std::endl;
 }
 
 void hmm2()
 {
 	int gen_number = 0;
-	int mutationNumber = 0;
-	float lastScore = 0;
-	Generation gen(50);
-	gen.play();
+	//int mutationNumber = 0;
+	//float lastScore = 0;
+	Generation gen(0.005,0.0);
 	while (true)
 	{
-		float progress = gen.score(gen.maks()) - lastScore;
-		std::cout << "Generation number: " << gen_number++ << ", max score:" << gen.score(gen.maks()) << ", progres: " << progress  << std::endl;
-		lastScore = gen.score(gen.maks());
-		//if (i % 10 == 0)
-		{
-			//if(gen.score(gen.maks())>6000)
-				gen.visual(gen.maks());
-			if (progress < 10)
-			{
-				gen.doubleMutationRate();
-				mutationNumber++;
-			}
-			if (progress > 25 )
-			{
-				for (int i = 0; i < mutationNumber; i++)
-					gen.halveMutationRate();
-				mutationNumber = 0;
-			}
-			std::cout << "Mutation rate: " << mutationNumber << std::endl;
-			//gen.visual(1);
-			//std::cout << "Another? (Y/N) ";
-			//std::cin >> a;
-			//if (a == 'N')
-				//break;
-		}
-		
-		if (gen_number % 10 == 9)
-		{
-			std::ostringstream ss;
-			ss << gen_number;
-			gen.save("Generacja_" + ss.str() + ".txt");
-		}
+		gen.play(); 
+		std::cout << "Generation " << gen_number << " score: " << gen.score() << std::endl;
 		gen.nextGen();
-		gen.play();
+		gen_number++;
 	}
-	std::cout << "End...";
+	//gen.play();
+	//while (true)
+	//{
+	//	float progress = gen.score(gen.maks()) - lastScore;
+	//	std::cout << "Generation number: " << gen_number++ << ", max score:" << gen.score(gen.maks()) << ", progres: " << progress  << std::endl;
+	//	lastScore = gen.score(gen.maks());
+	//	//if (i % 10 == 0)
+	//	{
+	//		//if(gen.score(gen.maks())>6000)
+	//			gen.visual(gen.maks());
+	//		if (progress < 10)
+	//		{
+	//			gen.doubleMutationRate();
+	//			mutationNumber++;
+	//		}
+	//		if (progress > 25 )
+	//		{
+	//			for (int i = 0; i < mutationNumber; i++)
+	//				gen.halveMutationRate();
+	//			mutationNumber = 0;
+	//		}
+	//		std::cout << "Mutation rate: " << mutationNumber << std::endl;
+	//		//gen.visual(1);
+	//		//std::cout << "Another? (Y/N) ";
+	//		//std::cin >> a;
+	//		//if (a == 'N')
+	//			//break;
+	//	}
+	//	
+	//	if (gen_number % 10 == 9)
+	//	{
+	//		std::ostringstream ss;
+	//		ss << gen_number;
+	//		gen.save("Generacja_" + ss.str() + ".txt");
+	//	}
+	//	gen.nextGen();
+	//	gen.play();
+	//}
+	//std::cout << "End...";
 
-	gen.visual(gen.maks());
+	//gen.visual();
 }
 
 void load()
 {
-	Generation gen(50);
-	std::cout << "Podaj nazwe pliku:" << std::endl;
-	std::string fileName;
-	std::cin >> fileName;
-	gen.load(fileName);
-	gen.visual(gen.maks());
-	/*
-	int gen_number = 3;
-	gen.play();
-	while (true)
-	{
-		std::cout << "Generation number: " << gen_number++ << ", max score:" << gen.score(gen.maks()) << std::endl;
-		{
-			//gen.visual(gen.maks());
-		}
-		std::ostringstream ss;
-		ss << gen_number;
-		//gen.save("Generacja_" + ss.str() + ".txt");
-		gen.nextGen();
-		gen.play();
-	}
-	*/
+	//Generation gen(50);
+	//std::cout << "Podaj nazwe pliku:" << std::endl;
+	//std::string fileName;
+	//std::cin >> fileName;
+	//gen.load(fileName);
+	//gen.visual(gen.maks());
+	///*
+	//int gen_number = 3;
+	//gen.play();
+	//while (true)
+	//{
+	//	std::cout << "Generation number: " << gen_number++ << ", max score:" << gen.score(gen.maks()) << std::endl;
+	//	{
+	//		//gen.visual(gen.maks());
+	//	}
+	//	std::ostringstream ss;
+	//	ss << gen_number;
+	//	//gen.save("Generacja_" + ss.str() + ".txt");
+	//	gen.nextGen();
+	//	gen.play();
+	//}
+	//*/
 }
 
 int main()

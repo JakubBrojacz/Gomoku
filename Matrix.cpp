@@ -56,9 +56,34 @@ Matrix * Matrix::dot(Matrix * n)
 	else
 	{
 		std::cout << "ERROR: Matrix cannot calculate dot produckt, matrix dimentions are bad" << std::endl;
+		throw std::exception("ERROR: Matrix cannot calculate dot produckt, matrix dimentions are bad");
 	}
 
 	return result;
+}
+
+Matrix * Matrix::transpose()
+{
+	Matrix* tmp = new Matrix(cols, rows);
+	for (int i = 0; i < cols; i++)
+		for (int j = 0; j < rows; j++)
+			tmp->matrix[i][j] = matrix[j][i];
+	return tmp;
+}
+
+Matrix * Matrix::hadamard(Matrix * n)
+{
+	Matrix* tmp = new Matrix(*this);
+	if (!(rows != n->rows || cols != n->cols))
+	{
+		std::cout << "Matrix dimensions doesnt match: Hadamard" << std::endl;
+		throw std::exception("Matrix dimensions doesnt match: Hadamard");
+		return tmp;
+	}
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+			tmp->matrix[i][j] *= n->matrix[i][j];
+	return tmp;
 }
 
 void Matrix::randomize()
@@ -71,6 +96,15 @@ void Matrix::randomize()
 }
 
 Matrix * Matrix::singleColumnMatrixFromArray(float * arr, int l)
+{
+	Matrix* n = new Matrix(l, 1);
+	for (int i = 0; i< l; i++) {
+		n->matrix[i][0] = arr[i];
+	}
+	return n;
+}
+
+Matrix * Matrix::singleColumnMatrixFromArray(int * arr, int l)
 {
 	Matrix* n = new Matrix(l, 1);
 	for (int i = 0; i< l; i++) {
@@ -109,6 +143,15 @@ Matrix * Matrix::addBias()
 	return n;
 }
 
+Matrix * Matrix::deleteBias()
+{
+	Matrix* n = new Matrix(rows - 1, 1);
+	for (int i = 0; i<rows-1; i++) {
+		n->matrix[i][0] = matrix[i][0];
+	}
+	return n;
+}
+
 Matrix * Matrix::activate()
 {
 	Matrix* n = new Matrix(rows, cols);
@@ -142,53 +185,45 @@ Matrix * Matrix::removeBottomLayer()
 	return n;
 }
 
-void Matrix::mutate(float mutationRate)
+
+void Matrix::GradientDescentSubtract(Matrix* a, Matrix * delta, float lambda)
 {
+	//GradiendDescendAddition calculates matrix whitch should be substract to weights of neural net between layer a and next layer
+	//a this layer
+	//delta=dC/dz from next layer
+	//lambda - learning rate
 
-	//mutate EVERY element (why not?)
-	for (int i = 0; i<rows; i++) {
-		for (int j = 0; j<cols; j++) {
-			float r = (float)(rand()) / (float)RAND_MAX;
-			if (r<mutationRate) {
-				matrix[i][j] += GaussRandom() / 5.0;
-				//std::cout << "Mutate";
-				//if(	rand()%100 < 90)
-				//	matrix[i][j] += ((float)(rand()) / (float)RAND_MAX - 0.5f)/20.f; //should be gaussRandom, but this works
-				//else if (rand() % 100 < 90)
-				//	matrix[i][j] += ((float)(rand()) / (float)RAND_MAX - 0.5f) /10.f;
-				//else
-				//	matrix[i][j] += ((float)(rand()) / (float)RAND_MAX - 0.5f)/5.f;
-
-			if (matrix[i][j]>1.0) {
-				matrix[i][j] = 1.0;			//make it not so big
-			}
-			if (matrix[i][j] <-1.0) {
-				matrix[i][j] = -1.0;
-			}
-			}
-		}
-	}
+	//Update weights
+	for (int i = 0; i<rows; i++)
+		for (int j = 0; j<cols - 1; j++)
+			matrix[i][j] += (*a)(j,0) * (*delta)(i,0) * lambda;
+	//Update bias
+	for (int i = 0; i<rows; i++)
+		matrix[i][cols - 1] += (*delta)(i,0) * lambda;
 }
 
-Matrix * Matrix::crossover(Matrix& partner)
+
+void Matrix::FinalGradientDescentWeightMatrix(Matrix* a, float mi, float lambda, int n)
 {
-	Matrix* child = new Matrix(rows, cols);
+	//mi - regularization parameter
+	//lambda - learning rate
+	//n - number of wighs in neural nerwork
 
-	//random crossover point
-	int randC = rand()%cols;
-	int randR = rand()%rows;
-	for (int i = 0; i<rows; i++) {
-		for (int j = 0; j<cols; j++) {
-
-			if ((i< randR) || (i == randR && j <= randC)) { //first from mother
-				child->matrix[i][j] = matrix[i][j];
-			}
-			else { //then from father
-				child->matrix[i][j] = partner.matrix[i][j];
-			}
-		}
+	if (a->rows != rows || a->cols != cols)
+	{
+		std::cout << "ERROR: matrix dimensions dont match (Matrix::FinalGradientDescendWeightMatrix)" << std::endl;
+		throw std::exception("matrix dimensions dont match (Matrix::FinalGradientDescendWeightMatrix)");
+		return;
 	}
-	return child;
+	//--------------------------------------------
+	//reguralization
+	for (int i = 0; i<rows; i++)
+		for (int j = 0; j<cols - 1; j++)
+			matrix[i][j] *= 1 - mi * lambda / (float)n;
+	//--------------------------------------------
+	for (int i = 0; i<rows; i++)
+		for (int j = 0; j<cols; j++)
+			matrix[i][j] -= a->matrix[i][j];
 }
 
 Matrix * Matrix::clone()
@@ -208,6 +243,12 @@ Matrix::~Matrix()
 		delete [] matrix[i];
 	delete [] matrix;
 }
+
+float & Matrix::operator()(int i, int j)
+{
+	return matrix[i][j];
+}
+
 
 std::ostream & operator<<(std::ostream & out, const Matrix & d)
 {

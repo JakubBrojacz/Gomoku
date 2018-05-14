@@ -24,12 +24,17 @@ public:
 	//multioplication (dot product)
 	Matrix* dot(Matrix* n);
 
+	Matrix* transpose();
+
+	Matrix* hadamard(Matrix* n);
+
 	//between -1,1
 	void randomize();
 
 
 	//Creates a single column array from the parameter array
-	Matrix* singleColumnMatrixFromArray(float* arr, int l);
+	static Matrix* singleColumnMatrixFromArray(float* arr, int l);
+	static Matrix* singleColumnMatrixFromArray(int* arr, int l);
 
 	//sets this matrix from an array
 	void fromArray(float* arr, int l);
@@ -40,6 +45,7 @@ public:
 
 	//add one row of bias
 	Matrix* addBias();
+	Matrix* deleteBias();
 
 	//call activation function on matrix or its derivative
 	Matrix* activate();
@@ -47,17 +53,16 @@ public:
 
 	Matrix* removeBottomLayer();
 
-	//mutate mutationrate*cols*rows elements
-	void mutate(float mutationRate);
+	void GradientDescentSubtract(Matrix * a, Matrix * delta, float lambda);
 
-	//+18
-	Matrix *crossover(Matrix& partner);
+	void FinalGradientDescentWeightMatrix(Matrix * a, float mi, float lambda, int n);
 
 	//copying constructor another way ... With pointers :D
 	Matrix* clone();
 
 	~Matrix();
 
+	float& operator()(int i, int j);
 	friend std::ostream& operator<<(std::ostream& out, const Matrix& d);
 	friend std::istream& operator>>(std::istream& in, Matrix& d);
 };

@@ -5,31 +5,33 @@
 
 class NeuralNet {
 
-	int iNodes;//No. of input nodes
-	int hNodes;//No. of hidden nodes
-	int oNodes;//No. of output nodes
 
-	Matrix* whi;//imput -> hidden
-	Matrix* whh;//hidden -> hidden2
-	Matrix* woh;//hidden2 -> output
+
+	Matrix** weights;
+	int n_layer;
+	int* layer;
 
 	unsigned int seed;
+
+	//for gradient descent
+	//see in cpp file
+	void zl_al(Matrix ** &al, Matrix ** &zl, int * board, int n);
+	Matrix ** GradientDescent_1(Matrix ** &zl, Matrix * a, float * y, int n2);
+	Matrix * DeltaL(float * a, float * y);
 public:
-	NeuralNet(int inputs, int hiddenNo, int outputNo);
+	NeuralNet(int n_layer, int* l);
 
 	NeuralNet(NeuralNet& d);
 
 
-	void mutate(float mr);
+	void GradientDescent(int m, int*board[], int n1, float* y[], int n2, float lambda, float mi); //nwm parametry + output
 
-	void GradientDescent(int m, int**board[], float y[], float lambda); //nwm parametry + output
+	
 
 
 	//the way brain thinks
 	float* output(float* inputsArr, int l);
 
-	//+18
-	NeuralNet* crossover(NeuralNet* partner);
 
 	//copy constructor with pointer
 	NeuralNet* clone();
